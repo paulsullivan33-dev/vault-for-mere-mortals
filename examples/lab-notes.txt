@@ -1,0 +1,93 @@
+The lab — one release binary, one dev server, nobody else's secrets
+====================================================================
+
+The lab is Vault as HashiCorp ships it:
+the official release zip, Vault 2.2.1
+(vault_2.2.1_linux_amd64.zip from
+releases.hashicorp.com), SHA-256 verified
+against the release's SHA256SUMS, run from
+a scratch folder on the build machine (an
+Ubuntu 24.04 sandbox) rather than installed
+system-wide. The server was the development
+server on 127.0.0.1 port 18081:
+
+  vault server -dev -dev-listen-address=127.0.0.1:18081 \
+      -dev-root-token-id=lab-root-token
+
+The fixed root token is a lab-only
+throwaway, chosen so the driver script is
+reproducible; the guide flags it as
+never-for-production wherever it appears.
+Dev mode was the honest lab choice: it
+runs the real engines, policies, tokens,
+leases and audit machinery, and says out
+loud what it switches off (in-memory
+storage, one unseal key, no TLS, no
+cluster). The 178 MB release zip and the
+extracted 526 MB binary were kept in the
+batch scratch folder, not in the checkout.
+
+  * The fixture organisation (fixtures/):
+    the "Inkwell Print Co.", a fictional
+    print shop, and its orders web service
+    needing a database password and an API
+    key; a billing secret the orders
+    service must NOT reach, as the denial
+    target. Policies inkwell-reader.hcl
+    (read exactly one path) and
+    token-maker.hcl (may create child
+    tokens); the PKI root CA and issued
+    certificate as PEM files, so the
+    openssl verification can be re-run by
+    any reader; an audit-log excerpt.
+    Generic, invented, and nobody's real
+    shop.
+
+  * The driver (run-lab.sh): starts the
+    dev server, waits for health, then
+    runs every exercise in order — KV,
+    versions, policy, transit, PKI,
+    audit, token leases, and finally
+    seal/unseal — capturing each into
+    transcripts/, then stops the server.
+    Its transient working folder (token
+    JSON, the full audit log) was scratch
+    and is not part of the checkout.
+
+  * Every claim's evidence
+    (vault-lab/transcripts/): t00 version
+    (2.2.1; the -format=json attempt
+    printed the plain banner — kept);
+    t01/t01b dev server, status, health,
+    mounts; t02 KV write/read and
+    versions 1-2; t03 history, soft
+    delete, undelete, destroy, metadata
+    delete, rollback; t04/t04b the policy,
+    its token, one allowed read by CLI
+    and curl, and four 403 exhibits;
+    t05 transit encrypt/decrypt plus a
+    second, different ciphertext over
+    curl; t06 PKI root, role, issue, and
+    openssl verify OK twice; t07 audit
+    enable and the denied request on
+    record, HMACs only; t08 token TTL,
+    lookup, renew, revoke (403, invalid
+    token), and the token tree; t09
+    seal (503, Vault is sealed), unseal,
+    data intact.
+
+  * Two faults, kept on record. The
+    first t08 run put -format=json after
+    the token in `vault token renew` and
+    got "Too many arguments", and its
+    parent/child attempt asked a
+    read-only token to create a child —
+    a 403 by design, since creating
+    tokens is itself a policy-gated
+    path (auth/token/create). The
+    transcript was re-run corrected
+    against a fresh dev server: flags
+    first, and a token-maker policy for
+    the parent. Both lessons are written
+    into chapters 8 and 16 rather than
+    silently tidied away.

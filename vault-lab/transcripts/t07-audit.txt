@@ -1,0 +1,20 @@
+
+### enable a file audit device writing to the lab folder
+Success! Enabled the file audit device at: file/
+Path     Type    Description
+----     ----    -----------
+file/    file    n/a
+
+### make one distinctive request as root: read secret/inkwell/billing
+
+### make one distinctive DENIED request with the limited token (denials are audited too)
+
+### the audit log is JSON, one object per line — the request lines for inkwell/billing
+{"type":"request","time":"2026-11-07T21:49:31.463360039Z","path":"secret/data/inkwell/billing","operation":"read","error":"1 error occurred:\n\t* permission denied\n\n"}
+{"type":"response","time":"2026-11-07T21:49:31.463641511Z","path":"secret/data/inkwell/billing","operation":"read","error":"1 error occurred:\n\t* permission denied\n\n"}
+
+### note: secret VALUES and token strings are HMAC-hashed in the audit log, never stored in clear
+{"auth_token_hmac":"hmac-sha256:4d1bd5a814d0d08e76c56983f9951b18e11bd427ea5dc296ca15c5ba0949f7fa","request_id":"f13771c9-38b9-2a2b-5401-0049852e326f"}
+
+### how many requests the lab has audited so far
+10

@@ -1,0 +1,30 @@
+site_name: Vault for Mere Mortals
+site_description: Store secrets in one guarded place, hand them out only to callers a policy allows, keep every version, encrypt and issue certificates as a service, and revoke any of it on demand.
+site_url: https://paulsullivan33-dev.github.io/vault-for-mere-mortals/
+copyright: 'Part of <a href="https://paulsullivan33-dev.github.io/mere-mortals/">For Mere Mortals</a> · Text <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>, code MIT'
+
+# Guides live at the repo root (nice for GitHub browsing).
+# The deploy workflow copies them into docs/ before building.
+theme:
+  name: material
+
+nav:
+  - Home: index.md
+  - What Vault Is: what-vault-is.md
+  - The Moving Parts: the-moving-parts.md
+  - Installing Vault: installing-vault.md
+  - Your First Server: your-first-server.md
+  - Secrets and the KV Engine: secrets-and-the-kv-engine.md
+  - Versions Delete and Destroy: versions-delete-and-destroy.md
+  - Policies: policies.md
+  - Tokens and Leases: tokens-and-leases.md
+  - The HTTP API: the-http-api.md
+  - Encryption as a Service: encryption-as-a-service.md
+  - Certificates from Vault: certificates-from-vault.md
+  - Audit Logging: audit-logging.md
+  - Real Jobs: real-jobs.md
+  - The Neighbours: the-neighbours.md
+  - Limits: limits.md
+  - Troubleshooting: troubleshooting.md
+  - Glossary: glossary.md
+  - Writing Criteria: criteria.md

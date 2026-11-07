@@ -1,0 +1,229 @@
+
+### a scratch secret with three versions
+======= Secret Path =======
+secret/data/inkwell/scratch
+
+======= Metadata =======
+Key                Value
+---                -----
+created_time       2026-11-07T21:49:11.744870837Z
+custom_metadata    <nil>
+deletion_time      n/a
+destroyed          false
+version            1
+======= Secret Path =======
+secret/data/inkwell/scratch
+
+======= Metadata =======
+Key                Value
+---                -----
+created_time       2026-11-07T21:49:12.221101239Z
+custom_metadata    <nil>
+deletion_time      n/a
+destroyed          false
+version            2
+======= Secret Path =======
+secret/data/inkwell/scratch
+
+======= Metadata =======
+Key                Value
+---                -----
+created_time       2026-11-07T21:49:12.452258483Z
+custom_metadata    <nil>
+deletion_time      n/a
+destroyed          false
+version            3
+
+### version history: vault kv metadata get
+======== Metadata Path ========
+secret/metadata/inkwell/scratch
+
+========== Metadata ==========
+Key                     Value
+---                     -----
+cas_required            false
+created_time            2026-11-07T21:49:11.744870837Z
+current_version         3
+custom_metadata         <nil>
+delete_version_after    0s
+last_updated_by         map[actor:token client_id:0DHqvq2D77kL2/JTPSZkTMJbkFVmUu0TzMi0jiXcFy8= operation:update]
+max_versions            0
+oldest_version          0
+updated_time            2026-11-07T21:49:12.452258483Z
+
+====== Version 1 ======
+Key              Value
+---              -----
+created_by       {"actor":"token","client_id":"0DHqvq2D77kL2/JTPSZkTMJbkFVmUu0TzMi0jiXcFy8=","operation":"create"}
+created_time     2026-11-07T21:49:11.744870837Z
+deleted_by       <nil>
+deletion_time    n/a
+destroyed        false
+
+====== Version 2 ======
+Key              Value
+---              -----
+created_by       {"actor":"token","client_id":"0DHqvq2D77kL2/JTPSZkTMJbkFVmUu0TzMi0jiXcFy8=","operation":"update"}
+created_time     2026-11-07T21:49:12.221101239Z
+deleted_by       <nil>
+deletion_time    n/a
+destroyed        false
+
+====== Version 3 ======
+Key              Value
+---              -----
+created_by       {"actor":"token","client_id":"0DHqvq2D77kL2/JTPSZkTMJbkFVmUu0TzMi0jiXcFy8=","operation":"update"}
+created_time     2026-11-07T21:49:12.452258483Z
+deleted_by       <nil>
+deletion_time    n/a
+destroyed        false
+
+### SOFT DELETE the latest version (v3): vault kv delete
+Success! Data deleted (if it existed) at: secret/data/inkwell/scratch
+
+### read after soft delete — data is gone from view, deletion_time is set
+======= Secret Path =======
+secret/data/inkwell/scratch
+
+======= Metadata =======
+Key                Value
+---                -----
+created_time       2026-11-07T21:49:12.452258483Z
+custom_metadata    <nil>
+deletion_time      2026-11-07T21:49:13.522464153Z
+destroyed          false
+version            3
+
+======= Secret Path =======
+secret/data/inkwell/scratch
+
+======= Metadata =======
+Key                Value
+---                -----
+created_time       2026-11-07T21:49:12.452258483Z
+custom_metadata    <nil>
+deletion_time      2026-11-07T21:49:13.522464153Z
+destroyed          false
+version            3
+
+
+### UNDELETE v3: vault kv undelete -versions=3
+Success! Data written to: secret/undelete/inkwell/scratch
+======= Secret Path =======
+secret/data/inkwell/scratch
+
+======= Metadata =======
+Key                Value
+---                -----
+created_time       2026-11-07T21:49:12.452258483Z
+custom_metadata    <nil>
+deletion_time      n/a
+destroyed          false
+version            3
+
+==== Data ====
+Key     Value
+---     -----
+note    third
+
+### DESTROY v1 permanently: vault kv destroy -versions=1
+Success! Data written to: secret/destroy/inkwell/scratch
+
+### read v1 after destroy — it does not come back
+======= Secret Path =======
+secret/data/inkwell/scratch
+
+======= Metadata =======
+Key                Value
+---                -----
+created_time       2026-11-07T21:49:11.744870837Z
+custom_metadata    <nil>
+deletion_time      n/a
+destroyed          true
+version            1
+
+
+### metadata after destroy (v1 marked destroyed)
+======== Metadata Path ========
+secret/metadata/inkwell/scratch
+
+========== Metadata ==========
+Key                     Value
+---                     -----
+cas_required            false
+created_time            2026-11-07T21:49:11.744870837Z
+current_version         3
+custom_metadata         <nil>
+delete_version_after    0s
+last_updated_by         map[actor:token client_id:0DHqvq2D77kL2/JTPSZkTMJbkFVmUu0TzMi0jiXcFy8= operation:undelete]
+max_versions            0
+oldest_version          0
+updated_time            2026-11-07T21:49:12.452258483Z
+
+====== Version 1 ======
+Key              Value
+---              -----
+created_by       {"actor":"token","client_id":"0DHqvq2D77kL2/JTPSZkTMJbkFVmUu0TzMi0jiXcFy8=","operation":"create"}
+created_time     2026-11-07T21:49:11.744870837Z
+deleted_by       <nil>
+deletion_time    n/a
+destroyed        true
+
+====== Version 2 ======
+Key              Value
+---              -----
+created_by       {"actor":"token","client_id":"0DHqvq2D77kL2/JTPSZkTMJbkFVmUu0TzMi0jiXcFy8=","operation":"update"}
+created_time     2026-11-07T21:49:12.221101239Z
+deleted_by       <nil>
+deletion_time    n/a
+destroyed        false
+
+====== Version 3 ======
+Key              Value
+---              -----
+created_by       {"actor":"token","client_id":"0DHqvq2D77kL2/JTPSZkTMJbkFVmUu0TzMi0jiXcFy8=","operation":"update"}
+created_time     2026-11-07T21:49:12.452258483Z
+deleted_by       <nil>
+deletion_time    n/a
+destroyed        false
+
+### DELETE ALL metadata and versions: vault kv metadata delete (on a second scratch secret)
+======== Secret Path ========
+secret/data/inkwell/scratch2
+
+======= Metadata =======
+Key                Value
+---                -----
+created_time       2026-11-07T21:49:16.053600638Z
+custom_metadata    <nil>
+deletion_time      n/a
+destroyed          false
+version            1
+Success! Data deleted (if it existed) at: secret/metadata/inkwell/scratch2
+No value found at secret/metadata/inkwell/scratch2
+
+### rollback demo: roll the orders secret back to version 1
+Key                Value
+---                -----
+created_time       2026-11-07T21:49:17.520088228Z
+custom_metadata    <nil>
+deletion_time      n/a
+destroyed          false
+version            3
+======= Secret Path =======
+secret/data/inkwell/orders
+
+======= Metadata =======
+Key                Value
+---                -----
+created_time       2026-11-07T21:49:17.520088228Z
+custom_metadata    <nil>
+deletion_time      n/a
+destroyed          false
+version            3
+
+======= Data =======
+Key            Value
+---            -----
+api_key        ink-1111-orders
+db_password    inkwell-db-pass-v1

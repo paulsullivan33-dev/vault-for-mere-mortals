@@ -1,0 +1,38 @@
+
+### write a second secret the policy does NOT cover
+======= Secret Path =======
+secret/data/inkwell/billing
+
+======= Metadata =======
+Key                Value
+---                -----
+created_time       2026-11-07T21:49:18.426842353Z
+custom_metadata    <nil>
+deletion_time      n/a
+destroyed          false
+version            1
+
+### the policy file (fixtures/inkwell-reader.hcl)
+# Inkwell Print Co. — the orders service may READ exactly one secret.
+path "secret/data/inkwell/orders" {
+  capabilities = ["read"]
+}
+
+### install it: vault policy write inkwell-reader
+Success! Uploaded policy: inkwell-reader
+
+### read it back: vault policy read inkwell-reader
+# Inkwell Print Co. — the orders service may READ exactly one secret.
+path "secret/data/inkwell/orders" {
+  capabilities = ["read"]
+}
+
+### create a token under the policy
+{
+  "client_token": "hvs.REDACTED",
+  "policies": [
+    "default",
+    "inkwell-reader"
+  ],
+  "lease_duration": 2764800
+}

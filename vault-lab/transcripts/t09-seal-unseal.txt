@@ -1,0 +1,51 @@
+
+### dev mode starts unsealed and prints ONE unseal key (threshold 1 of 1)
+unseal key from the startup log (lab-only, from an in-memory dev server): RWxruvWj4gC6ZcvIcoqgUGZtdrGWw+rwSgyqFF6de1E=
+
+### status before sealing
+Initialized     true
+Sealed          false
+
+### SEAL the server as root: vault operator seal
+Success! Vault is sealed.
+
+### status while sealed
+Key                Value
+---                -----
+Seal Type          shamir
+Initialized        true
+Sealed             true
+Total Shares       1
+Threshold          1
+Unseal Progress    0/1
+Unseal Nonce       n/a
+Version            2.2.1
+Build Date         2026-10-22T16:27:49Z
+Storage Type       inmem
+HA Enabled         false
+
+### while sealed, the API answers 503 and data is unreachable
+{"errors":["Vault is sealed"]}
+
+HTTP_STATUS=503
+{"sealed":true,"initialized":true,"standby":true}
+
+### UNSEAL with the single key: vault operator unseal (key hidden from this transcript on purpose in real life — shown here because it is a throwaway dev key)
+Key             Value
+---             -----
+Seal Type       shamir
+Initialized     true
+Sealed          false
+Total Shares    1
+Threshold       1
+Version         2.2.1
+Build Date      2026-10-22T16:27:49Z
+Storage Type    inmem
+Cluster Name    vault-cluster-d8f03555
+Cluster ID      c18e88e9-6c10-2680-cd03-f11cea7117c9
+HA Enabled      false
+
+### status after unsealing — and the lab data is still there (it never left memory)
+Initialized     true
+Sealed          false
+inkwell-db-pass-v1

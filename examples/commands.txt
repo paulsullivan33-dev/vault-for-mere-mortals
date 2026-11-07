@@ -1,0 +1,112 @@
+vault — the distilled commands
+====================================================================
+Placeholders: <token> is a token value;
+<lab> is this guide's vault-lab folder.
+Every command below is one the lab ran
+(transcripts in vault-lab/transcripts/)
+or names as documented-only in the guide.
+The lab server was a dev server on
+http://127.0.0.1:18081 with the lab-only
+throwaway root token "lab-root-token".
+Never reuse that token pattern for real.
+
+SETUP (chapters 3-4)
+--------------------------------------------------------------------
+  export VAULT_ADDR=http://127.0.0.1:18081
+  export VAULT_TOKEN=lab-root-token   # LAB ONLY — throwaway
+  vault version                       # the check every install
+                                      # must pass (2.2.1 in lab)
+  vault server -dev -dev-listen-address=127.0.0.1:18081 \
+      -dev-root-token-id=lab-root-token
+                                      # the lab server: in-memory,
+                                      # one unseal key, no TLS.
+                                      # -dev-root-token-id is a
+                                      # test-only flag, never real
+  vault status                        # Sealed? Initialized?
+  curl $VAULT_ADDR/v1/sys/health      # the same, as JSON,
+                                      # no token needed
+
+KV SECRETS (chapters 5-6)
+--------------------------------------------------------------------
+  vault kv put secret/inkwell/orders db_password=... api_key=...
+                                      # create a new version with
+                                      # the COMPLETE field set
+  vault kv get secret/inkwell/orders  # latest version
+  vault kv get -version=1 secret/inkwell/orders
+  vault kv get -field=db_password secret/inkwell/orders
+  vault kv metadata get secret/inkwell/scratch
+                                      # the version history
+  vault kv delete secret/inkwell/scratch
+                                      # SOFT delete of latest:
+                                      # recoverable
+  vault kv undelete -versions=3 secret/inkwell/scratch
+  vault kv destroy -versions=1 secret/inkwell/scratch
+                                      # PERMANENT for version 1
+  vault kv metadata delete secret/inkwell/scratch2
+                                      # the whole secret, gone
+  vault kv rollback -version=1 secret/inkwell/orders
+                                      # old data, new version
+
+POLICIES AND TOKENS (chapters 7-8)
+--------------------------------------------------------------------
+  vault policy write inkwell-reader vault-lab/fixtures/inkwell-reader.hcl
+  vault policy read inkwell-reader
+  vault token create -policy=inkwell-reader -format=json
+  vault token lookup <token>          # ttl, expire_time,
+                                      # policies
+  vault token renew -increment=120s -format=json <token>
+                                      # flags BEFORE the token,
+                                      # or "Too many arguments"
+  vault token revoke <token>          # immediate; children of
+                                      # <token> die with it
+
+THE API DIRECTLY (chapter 9)
+--------------------------------------------------------------------
+  curl -H "X-Vault-Token: <token>" \
+    $VAULT_ADDR/v1/secret/data/inkwell/orders
+                                      # data in .data.data,
+                                      # bookkeeping in
+                                      # .data.metadata
+  # 403 = policy or invalid token; 503 = sealed;
+  # errors arrive as {"errors":[ ... ]}
+
+TRANSIT (chapter 10)
+--------------------------------------------------------------------
+  vault secrets enable transit
+  vault write -f transit/keys/inkwell-orders
+  vault write transit/encrypt/inkwell-orders \
+      plaintext=$(printf 'secret' | base64)
+                                      # -> vault:v1:... which is
+                                      # safe to store anywhere
+  vault write transit/decrypt/inkwell-orders ciphertext=vault:v1:...
+                                      # -> the base64 plaintext
+
+PKI (chapter 11)
+--------------------------------------------------------------------
+  vault secrets enable pki
+  vault secrets tune -max-lease-ttl=87600h pki
+  vault write -field=certificate pki/root/generate/internal \
+      common_name="Inkwell Print Co. Internal CA" ttl=87600h
+  vault write pki/roles/inkwell-orders \
+      allowed_domains=example.test allow_subdomains=true max_ttl=720h
+  vault write pki/issue/inkwell-orders \
+      common_name="orders.inkwell.example.test" ttl=720h
+  openssl verify -CAfile root-ca.pem issued-cert.pem
+                                      # -> issued-cert.pem: OK
+
+AUDIT (chapter 12)
+--------------------------------------------------------------------
+  vault audit enable file file_path=<lab>/work/audit.log
+  vault audit list
+  # one JSON object per line; values and tokens
+  # appear only as hmac-sha256: fingerprints;
+  # denials are recorded with their error
+
+SEAL (chapter 4)
+--------------------------------------------------------------------
+  vault operator seal                 # locks the store; the
+                                      # API then answers 503
+  vault operator unseal <key>         # dev server: one key.
+                                      # Real servers: several
+                                      # shares, several people —
+                                      # a ceremony, chapter 15.

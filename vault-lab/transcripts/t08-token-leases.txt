@@ -1,0 +1,74 @@
+
+### create a renewable service token with a 120-second TTL
+{
+  "lease_duration": 120,
+  "renewable": true
+}
+
+### look it up (note ttl counting down)
+creation_ttl        2m
+expire_time         2026-11-07T21:52:37.020388017Z
+explicit_max_ttl    10m
+policies            [default inkwell-reader]
+ttl                 1m59s
+
+### RENEW it — the lease extends (flags before the token; after it they are read as extra arguments)
+{
+  "lease_duration": 120,
+  "renewable": true
+}
+
+### use it while it lives
+inkwell-db-pass-v1
+### REVOKE it — revocation is immediate, not at expiry
+Success! Revoked token (if it existed)
+revoke exit code: 0
+
+### the revoked token can no longer read anything
+Error making API request.
+
+URL: GET http://127.0.0.1:18081/v1/sys/internal/ui/mounts/secret/inkwell/orders
+Code: 403. Errors:
+
+* 2 errors occurred:
+	* permission denied
+	* invalid token
+
+
+{"errors":["2 errors occurred:\n\t* permission denied\n\t* invalid token\n\n"]}
+
+HTTP_STATUS=403
+
+### TOKEN TREES, attempt 1: a plain inkwell-reader token tries to create a child — DENIED
+(a token may create children only if its policy allows auth/token/create)
+Error creating token: Error making API request.
+
+URL: POST http://127.0.0.1:18081/v1/auth/token/create
+Code: 403. Errors:
+
+* 1 error occurred:
+	* permission denied
+
+
+
+### TOKEN TREES, attempt 2: give the parent a second policy that allows creating tokens
+Success! Uploaded policy: token-maker
+child token created by the parent (value not printed; it is a lab throwaway)
+
+### the child works while the parent lives
+inkwell-db-pass-v1
+### REVOKE THE PARENT — the child dies with it
+Success! Revoked token (if it existed)
+Error making API request.
+
+URL: GET http://127.0.0.1:18081/v1/sys/internal/ui/mounts/secret/inkwell/orders
+Code: 403. Errors:
+
+* 2 errors occurred:
+	* permission denied
+	* invalid token
+
+
+{"errors":["2 errors occurred:\n\t* permission denied\n\t* invalid token\n\n"]}
+
+HTTP_STATUS=403

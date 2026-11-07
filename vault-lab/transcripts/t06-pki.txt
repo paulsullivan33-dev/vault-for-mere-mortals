@@ -1,0 +1,134 @@
+
+### enable the PKI engine at pki/ and tune its maximum lease
+Success! Enabled the pki secrets engine at: pki/
+Success! Tuned the secrets engine at: pki/
+
+### create the root CA (Inkwell Print Co. Internal CA, TTL 10 years)
+-----BEGIN CERTIFICATE-----
+MIIDQTCCAimgAwIBAgIUfE6FZRpo0vp309o9y8M9Zohd0/swDQYJKoZIhvcNAQEL
+BQAwKDEmMCQGA1UEAxMdSW5rd2VsbCBQcmludCBDby4gSW50ZXJuYWwgQ0EwHhcN
+
+### create a role for the orders service (inkwell.example.test, 30-day certs)
+Key                                   Value
+---                                   -----
+allow_any_name                        false
+allow_bare_domains                    false
+allow_glob_domains                    false
+allow_ip_sans                         true
+allow_localhost                       true
+allow_subdomains                      true
+allow_token_displayname               false
+allow_wildcard_certificates           true
+allowed_domains                       [example.test]
+allowed_domains_template              false
+allowed_other_sans                    []
+allowed_serial_numbers                []
+allowed_uri_sans                      []
+allowed_uri_sans_template             false
+allowed_user_ids                      []
+basic_constraints_valid_for_non_ca    false
+client_flag                           true
+cn_validations                        [email hostname]
+code_signing_flag                     false
+country                               []
+csr_extra_names_oids                  []
+email_protection_flag                 false
+enforce_hostnames                     true
+ext_key_usage                         []
+ext_key_usage_oids                    []
+generate_lease                        false
+issuer_ref                            default
+key_bits                              2048
+key_type                              rsa
+key_usage                             [DigitalSignature KeyAgreement KeyEncipherment]
+locality                              []
+max_ttl                               720h
+no_store                              false
+not_after                             n/a
+not_before_duration                   30s
+organization                          []
+ou                                    []
+parameter_set                         n/a
+policy_identifiers                    []
+postal_code                           []
+province                              []
+require_cn                            true
+serial_number_source                  json-csr
+server_flag                           true
+signature_bits                        256
+street_address                        []
+ttl                                   0s
+use_csr_common_name                   true
+use_csr_sans                          true
+use_pss                               false
+Key                                   Value
+---                                   -----
+allow_any_name                        false
+allow_bare_domains                    false
+allow_glob_domains                    false
+allow_ip_sans                         true
+allow_localhost                       true
+allow_subdomains                      true
+allow_token_displayname               false
+allow_wildcard_certificates           true
+allowed_domains                       [example.test]
+allowed_domains_template              false
+allowed_other_sans                    []
+allowed_serial_numbers                []
+allowed_uri_sans                      []
+allowed_uri_sans_template             false
+allowed_user_ids                      []
+basic_constraints_valid_for_non_ca    false
+client_flag                           true
+cn_validations                        [email hostname]
+code_signing_flag                     false
+country                               []
+csr_extra_names_oids                  []
+email_protection_flag                 false
+enforce_hostnames                     true
+ext_key_usage                         []
+ext_key_usage_oids                    []
+generate_lease                        false
+issuer_ref                            default
+key_bits                              2048
+key_type                              rsa
+key_usage                             [DigitalSignature KeyAgreement KeyEncipherment]
+locality                              []
+max_ttl                               720h
+no_store                              false
+not_after                             n/a
+not_before_duration                   30s
+organization                          []
+ou                                    []
+parameter_set                         n/a
+policy_identifiers                    []
+postal_code                           []
+province                              []
+require_cn                            true
+serial_number_source                  json-csr
+server_flag                           true
+signature_bits                        256
+street_address                        []
+ttl                                   0s
+use_csr_common_name                   true
+use_csr_sans                          true
+use_pss                               false
+
+### issue a certificate for orders.inkwell.example.test
+{
+  "serial": "55:ce:65:fb:bb:fe:b8:56:f1:f1:f4:cc:0f:91:12:d3:af:0d:06:f1",
+  "expiration": 1796680169
+}
+
+### the issued certificate, decoded by openssl
+subject=CN = orders.inkwell.example.test
+issuer=CN = Inkwell Print Co. Internal CA
+notBefore=Nov  7 21:48:59 2026 GMT
+notAfter=Dec  7 21:49:29 2026 GMT
+serial=55CE65FBBBFEB856F1F1F4CC0F9112D3AF0D06F1
+
+### verify the issued certificate against the root CA with openssl
+issued-cert.pem: OK
+
+### also verify using the issuing_ca returned with the cert
+issued-cert.pem: OK

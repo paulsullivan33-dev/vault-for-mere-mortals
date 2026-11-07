@@ -1,0 +1,71 @@
+
+### dev server start command
+vault server -dev -dev-listen-address=127.0.0.1:18081 -dev-root-token-id=lab-root-token
+(root token is a fixed lab-only throwaway chosen by run-lab.sh; dev mode only)
+
+### excerpt of the server's own startup log (dev-server.log)
+==> Vault server started! Log data will stream in below:
+2026-11-07T21:49:03.829Z [INFO]  core: vault is unsealed
+WARNING! dev mode is enabled! In this mode, Vault runs entirely in-memory
+Unseal Key: RWxruvWj4gC6ZcvIcoqgUGZtdrGWw+rwSgyqFF6de1E=
+Root Token: lab-root-token
+
+### vault status (CLI)
+Key             Value
+---             -----
+Seal Type       shamir
+Initialized     true
+Sealed          false
+Total Shares    1
+Threshold       1
+Version         2.2.1
+Build Date      2026-10-22T16:27:49Z
+Storage Type    inmem
+Cluster Name    vault-cluster-d8f03555
+Cluster ID      c18e88e9-6c10-2680-cd03-f11cea7117c9
+HA Enabled      false
+
+### GET /v1/sys/health (HTTP API, no token needed for health)
+{
+  "initialized": true,
+  "sealed": false,
+  "standby": false,
+  "performance_standby": false,
+  "replication_performance_mode": "disabled",
+  "replication_dr_mode": "disabled",
+  "server_time_utc": 1794088146,
+  "version": "2.2.1",
+  "enterprise": false,
+  "cluster_name": "vault-cluster-d8f03555",
+  "cluster_id": "c18e88e9-6c10-2680-cd03-f11cea7117c9",
+  "echo_duration_ms": 0,
+  "clock_skew_ms": 0,
+  "replication_primary_canary_age_ms": 0
+}
+
+### GET /v1/sys/seal-status (HTTP API)
+{
+  "type": "shamir",
+  "initialized": true,
+  "sealed": false,
+  "t": 1,
+  "n": 1,
+  "progress": 0,
+  "nonce": "",
+  "version": "2.2.1",
+  "build_date": "2026-10-22T16:27:49Z",
+  "migration": false,
+  "cluster_name": "vault-cluster-d8f03555",
+  "cluster_id": "c18e88e9-6c10-2680-cd03-f11cea7117c9",
+  "recovery_seal": false,
+  "storage_type": "inmem"
+}
+
+### vault secrets list (what a fresh dev server mounts for you)
+Path               Type              Accessor                   Description
+----               ----              --------                   -----------
+agent-registry/    agent_registry    agent-registry_97a195ad    agent registry
+cubbyhole/         cubbyhole         cubbyhole_e71e1148         per-token private secret storage
+identity/          identity          identity_c3693fba          identity store
+secret/            kv                kv_84d33a37                key/value secret storage
+sys/               system            system_21b5bb49            system endpoints used for control, policy and debugging

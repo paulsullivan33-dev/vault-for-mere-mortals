@@ -1,0 +1,89 @@
+
+### enable the transit engine at transit/
+Success! Enabled the transit secrets engine at: transit/
+transit/           transit           transit_d5885552           n/a
+
+### create a key named inkwell-orders
+Key                       Value
+---                       -----
+allow_plaintext_backup    false
+auto_rotate_period        0s
+deletion_allowed          false
+derived                   false
+exportable                false
+imported_key              false
+key_usages                [aead-encryption]
+keys                      map[1:1794088164]
+latest_version            1
+latest_version_type       aes256-gcm96
+min_available_version     0
+min_decryption_version    1
+min_encryption_version    0
+name                      inkwell-orders
+supports_decryption       true
+supports_derivation       true
+supports_encryption       true
+supports_signing          false
+type                      aes256-gcm96
+Key                       Value
+---                       -----
+allow_plaintext_backup    false
+auto_rotate_period        0s
+deletion_allowed          false
+derived                   false
+exportable                false
+imported_key              false
+key_usages                [aead-encryption]
+keys                      map[1:1794088164]
+latest_version            1
+latest_version_type       aes256-gcm96
+min_available_version     0
+min_decryption_version    1
+min_encryption_version    0
+name                      inkwell-orders
+supports_decryption       true
+supports_derivation       true
+supports_encryption       true
+supports_signing          false
+type                      aes256-gcm96
+
+### encrypt a plaintext (the plaintext travels base64-encoded, as the API requires)
+plaintext base64: aW5rd2VsbC1kYi1wYXNzLXYy
+{
+  "request_id": "4b257624-f62b-f049-c796-040f13c08dd6",
+  "lease_id": "",
+  "lease_duration": 0,
+  "renewable": false,
+  "data": {
+    "ciphertext": "vault:v1:DAStIcGHpvIfDK4/APcNKKGaUcLTBzSumLq6bbdO6tXor4zrby/vOsx+mgJPQQ==",
+    "key_version": 1
+  },
+  "warnings": [
+    "Endpoint ignored these unrecognized parameters: [-format]"
+  ],
+  "mount_type": "transit"
+}
+ciphertext: vault:v1:DAStIcGHpvIfDK4/APcNKKGaUcLTBzSumLq6bbdO6tXor4zrby/vOsx+mgJPQQ==
+
+### decrypt it back with the same key
+{
+  "request_id": "fc19fe5e-69ae-df04-59fc-4c738f2f0eb6",
+  "lease_id": "",
+  "lease_duration": 0,
+  "renewable": false,
+  "data": {
+    "plaintext": "aW5rd2VsbC1kYi1wYXNzLXYy"
+  },
+  "warnings": [
+    "Endpoint ignored these unrecognized parameters: [-format]"
+  ],
+  "mount_type": "transit"
+}
+decoded plaintext: inkwell-db-pass-v2
+
+### the same encrypt over the HTTP API (curl)
+{"ciphertext":"vault:v1:6sgauNjKlaOX5W0u76yMJny/rkg7/lww2rxysSTQxtpzNB0KmgiKMp0Tm9w/tw==","key_version":1}
+
+### proof the ciphertext is not the plaintext
+plaintext was: inkwell-db-pass-v2
+ciphertext is: vault:v1:DAStIcGHpvIfDK4/APcNKKGaUcLTBzSumLq6bbdO6tXor4zrby/vOsx+mgJPQQ==

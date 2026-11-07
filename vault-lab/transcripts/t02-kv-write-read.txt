@@ -1,0 +1,97 @@
+
+### the dev server mounts KV v2 at secret/ — confirm
+Path               Plugin            Accessor                   Default TTL    Max TTL    Force No Cache    Replication    Seal Wrap    External Entropy Access    Options           Description                                                UUID                                    Version    Running Version         Running SHA256    Deprecation Status
+secret/            kv                kv_84d33a37                system         system     false             replicated     false        false                      map[version:2]    key/value secret storage                                   7a83c711-70e7-ad01-6dd8-113555f6f196    n/a        v0.27.0+builtin         n/a               supported
+
+### write v1: vault kv put secret/inkwell/orders db_password=... api_key=...
+======= Secret Path =======
+secret/data/inkwell/orders
+
+======= Metadata =======
+Key                Value
+---                -----
+created_time       2026-11-07T21:49:08.744086113Z
+custom_metadata    <nil>
+deletion_time      n/a
+destroyed          false
+version            1
+
+### read it back: vault kv get secret/inkwell/orders
+======= Secret Path =======
+secret/data/inkwell/orders
+
+======= Metadata =======
+Key                Value
+---                -----
+created_time       2026-11-07T21:49:08.744086113Z
+custom_metadata    <nil>
+deletion_time      n/a
+destroyed          false
+version            1
+
+======= Data =======
+Key            Value
+---            -----
+api_key        ink-1111-orders
+db_password    inkwell-db-pass-v1
+
+### read just one field as JSON (HTTP API parity)
+{
+  "created_time": null,
+  "version": null
+}
+{
+  "created_time": "2026-11-07T21:49:08.744086113Z",
+  "version": 1
+}
+
+### overwrite with v2 (changed db_password)
+======= Secret Path =======
+secret/data/inkwell/orders
+
+======= Metadata =======
+Key                Value
+---                -----
+created_time       2026-11-07T21:49:10.230833462Z
+custom_metadata    <nil>
+deletion_time      n/a
+destroyed          false
+version            2
+
+### read version 1 explicitly
+======= Secret Path =======
+secret/data/inkwell/orders
+
+======= Metadata =======
+Key                Value
+---                -----
+created_time       2026-11-07T21:49:08.744086113Z
+custom_metadata    <nil>
+deletion_time      n/a
+destroyed          false
+version            1
+
+======= Data =======
+Key            Value
+---            -----
+api_key        ink-1111-orders
+db_password    inkwell-db-pass-v1
+
+### read latest (version 2)
+======= Secret Path =======
+secret/data/inkwell/orders
+
+======= Metadata =======
+Key                Value
+---                -----
+created_time       2026-11-07T21:49:10.230833462Z
+custom_metadata    <nil>
+deletion_time      n/a
+destroyed          false
+version            2
+
+======= Data =======
+Key            Value
+---            -----
+api_key        ink-1111-orders
+db_password    inkwell-db-pass-v2

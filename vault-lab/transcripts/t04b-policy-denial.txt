@@ -1,0 +1,78 @@
+
+### with the inkwell-reader token: read the ONE allowed path (CLI)
+======= Secret Path =======
+secret/data/inkwell/orders
+
+======= Metadata =======
+Key                Value
+---                -----
+created_time       2026-11-07T21:49:17.520088228Z
+custom_metadata    <nil>
+deletion_time      n/a
+destroyed          false
+version            3
+
+======= Data =======
+Key            Value
+---            -----
+api_key        ink-1111-orders
+db_password    inkwell-db-pass-v1
+
+### with the inkwell-reader token: read the SAME path over the HTTP API
+{"api_key":"ink-1111-orders","db_password":"inkwell-db-pass-v1"}
+
+### DENIAL 1 (CLI): the same token reaches for secret/inkwell/billing
+Error reading secret/data/inkwell/billing: Error making API request.
+
+URL: GET http://127.0.0.1:18081/v1/secret/data/inkwell/billing
+Code: 403. Errors:
+
+* 1 error occurred:
+	* permission denied
+
+
+
+### DENIAL 2 (HTTP API): same request with curl — note HTTP 403 and the error body
+{"errors":["1 error occurred:\n\t* permission denied\n\n"]}
+
+HTTP_STATUS=403
+
+### DENIAL 3 (CLI): the same token tries to WRITE to its own allowed path (policy is read-only)
+Error writing data to secret/data/inkwell/orders: Error making API request.
+
+URL: PUT http://127.0.0.1:18081/v1/secret/data/inkwell/orders
+Code: 403. Errors:
+
+* 1 error occurred:
+	* permission denied
+
+
+
+### DENIAL 4 (CLI): the same token tries to list mounts
+Error listing secrets engines: Error making API request.
+
+URL: GET http://127.0.0.1:18081/v1/sys/mounts
+Code: 403. Errors:
+
+* 1 error occurred:
+	* permission denied
+
+
+
+### control check: the root token reads billing fine — the denial is the policy, not the data
+======= Secret Path =======
+secret/data/inkwell/billing
+
+======= Metadata =======
+Key                Value
+---                -----
+created_time       2026-11-07T21:49:18.426842353Z
+custom_metadata    <nil>
+deletion_time      n/a
+destroyed          false
+version            1
+
+======= Data =======
+Key           Value
+---           -----
+card_token    billing-secret-not-for-orders

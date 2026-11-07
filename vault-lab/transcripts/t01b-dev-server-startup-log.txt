@@ -1,0 +1,125 @@
+==> Vault server configuration:
+
+Administrative Namespace: 
+             Api Address: http://127.0.0.1:18081
+                     Cgo: disabled
+         Cluster Address: https://127.0.0.1:18082
+   Environment Variables: ALL_PROXY, AWS_CA_BUNDLE, CURL_CA_BUNDLE, GIT_SSL_CAINFO, HATCH_API_SOCKET, HOME, HTTPS_PROXY, HTTP_PROXY, JARVIS_AUTHD_INGRESS_ALLOWED_USERS, JARVIS_AUTHD_SOCK, JARVIS_BIN_DIR, JARVIS_CD_CHANNEL, JARVIS_CD_PINNED, JARVIS_DAEMON_EGRESS_APPROVAL_SOCK, JARVIS_EGRESS_APPROVAL_ADMIN_SOCK, JARVIS_EGRESS_APPROVAL_EVENTS_SOCK, JARVIS_FQDN, JARVIS_HATCHLING_ID, JARVIS_HOME, JARVIS_INFERENCE_HOSTNAME, JARVIS_INFERENCE_PROXY_SOCK, JARVIS_IS_ASSIGNED, JARVIS_MEMORY_SOCK, JARVIS_PRESENTATION_LOCALE, JARVIS_REQUEST_MODE, JARVIS_RESCUE_SIGNAL_SOCK, JARVIS_RUNTIME_CONTEXT_TOKEN, JARVIS_SANDBOX_API_SOCK, JARVIS_SECURITY_SOCK, JARVIS_SENTINEL_HTTP_API_SOCKET, JARVIS_SESSION_ID, JARVIS_STEFI_PROXY_SOCK, JARVIS_TELEMETRY_PROXY_SOCK, JARVIS_TIER, JARVIS_TOOL_CALL_ID, JARVIS_TRACE_CONTEXT, JARVIS_USER_TIMEZONE, JARVIS_VM_COMPUTE_REGION, NODE_EXTRA_CA_CERTS, NODE_USE_ENV_PROXY, NO_PROXY, OLDPWD, PATH, PWD, REQUESTS_CA_BUNDLE, SHLVL, SSL_CERT_FILE, VAULT_ADDR, VAULT_TOKEN, WGETRC, _, all_proxy, http_proxy, https_proxy, no_proxy
+              Go Version: go1.27.3
+              Listener 1: tcp (addr: "127.0.0.1:18081", cluster address: "127.0.0.1:18082", disable_request_limiter: "false", max_json_array_element_count: "10000", max_json_depth: "300", max_json_object_entry_count: "10000", max_json_string_value_length: "1048576", max_request_duration: "1m30s", max_request_size: "33554432", tls: "disabled")
+               Log Level: 
+                   Mlock: supported: true, enabled: false
+      Operator Namespace: 
+           Recovery Mode: false
+                 Storage: inmem
+                 Version: Vault v2.2.1, built 2026-10-22T16:27:49Z
+             Version Sha: 0e7c41b936218bd2401ab0f891c93bec10e2e8e4
+
+==> Vault server started! Log data will stream in below:
+
+2026-11-07T21:49:03.630Z [INFO]  proxy environment: http_proxy=http://redacted-username:redacted-password@hatch-egress-proxy:3128 https_proxy=http://redacted-username:redacted-password@hatch-egress-proxy:3128 no_proxy="localhost,127.0.0.1,::1,[::1],198.19.0.1,198.19.0.2,fd8b:4f84:7d32:99::1,[fd8b:4f84:7d32:99::1],fd8b:4f84:7d32:99::2,[fd8b:4f84:7d32:99::2]"
+2026-11-07T21:49:03.632Z [INFO]  incrementing seal generation: generation=1
+2026-11-07T21:49:03.632Z [WARN]  no `api_addr` value specified in config or in VAULT_API_ADDR; falling back to detection if possible, but this value should be manually set
+2026-11-07T21:49:03.642Z [INFO]  core: Initializing version history cache for core
+2026-11-07T21:49:03.642Z [INFO]  events: Starting event system
+2026-11-07T21:49:03.652Z [INFO]  core: security barrier not initialized
+2026-11-07T21:49:03.652Z [INFO]  core: security barrier initialized: stored=1 shares=1 threshold=1
+2026-11-07T21:49:03.653Z [INFO]  core: post-unseal setup starting
+2026-11-07T21:49:03.669Z [INFO]  core: loaded wrapping token key
+2026-11-07T21:49:03.669Z [INFO]  core: successfully setup plugin runtime catalog
+2026-11-07T21:49:03.669Z [INFO]  core: successfully setup plugin catalog: plugin-directory=""
+2026-11-07T21:49:03.669Z [INFO]  core: no mounts; adding default mount table
+2026-11-07T21:49:03.722Z [INFO]  core: successfully mounted: type=cubbyhole version="v2.2.1+builtin.vault" path=cubbyhole/ namespace="ID: root. Path: "
+2026-11-07T21:49:03.723Z [INFO]  core: successfully mounted: type=system version="v2.2.1+builtin.vault" path=sys/ namespace="ID: root. Path: "
+2026-11-07T21:49:03.725Z [INFO]  core: successfully mounted: type=identity version="v2.2.1+builtin.vault" path=identity/ namespace="ID: root. Path: "
+2026-11-07T21:49:03.725Z [INFO]  core: successfully mounted: type=agent_registry version="v2.2.1+builtin.vault" path=agent-registry/ namespace="ID: root. Path: "
+2026-11-07T21:49:03.727Z [INFO]  core: successfully mounted: type=token version="v2.2.1+builtin.vault" path=token/ namespace="ID: root. Path: "
+2026-11-07T21:49:03.727Z [INFO]  rollback: Starting the rollback manager with 256 workers
+2026-11-07T21:49:03.728Z [INFO]  rollback: starting rollback manager
+2026-11-07T21:49:03.736Z [INFO]  core: restoring leases
+2026-11-07T21:49:03.738Z [INFO]  expiration: lease restore complete
+2026-11-07T21:49:03.745Z [INFO]  identity: entities restored
+2026-11-07T21:49:03.745Z [INFO]  identity: groups restored
+2026-11-07T21:49:03.748Z [INFO]  core: Recorded vault version: vault version=2.2.1 upgrade time="2026-11-07 21:49:03.748625911 +0000 UTC" build date=2026-10-22T16:27:49Z
+2026-11-07T21:49:03.754Z [INFO]  core: post-unseal setup complete
+2026-11-07T21:49:03.755Z [INFO]  core: root token generated
+2026-11-07T21:49:03.755Z [INFO]  core: pre-seal teardown starting
+2026-11-07T21:49:03.755Z [INFO]  rollback: stopping rollback manager
+2026-11-07T21:49:03.755Z [INFO]  core: pre-seal teardown complete
+2026-11-07T21:49:03.758Z [INFO]  core.cluster-listener.tcp: starting listener: listener_address=127.0.0.1:18082
+2026-11-07T21:49:03.758Z [INFO]  core.cluster-listener: serving cluster requests: cluster_listen_address=127.0.0.1:18082
+2026-11-07T21:49:03.758Z [INFO]  core: post-unseal setup starting
+2026-11-07T21:49:03.758Z [INFO]  core: loaded wrapping token key
+2026-11-07T21:49:03.758Z [INFO]  core: successfully setup plugin runtime catalog
+2026-11-07T21:49:03.758Z [INFO]  core: successfully setup plugin catalog: plugin-directory=""
+2026-11-07T21:49:03.763Z [INFO]  core: successfully mounted: type=system version="v2.2.1+builtin.vault" path=sys/ namespace="ID: root. Path: "
+2026-11-07T21:49:03.764Z [INFO]  core: successfully mounted: type=identity version="v2.2.1+builtin.vault" path=identity/ namespace="ID: root. Path: "
+2026-11-07T21:49:03.765Z [INFO]  core: successfully mounted: type=agent_registry version="v2.2.1+builtin.vault" path=agent-registry/ namespace="ID: root. Path: "
+2026-11-07T21:49:03.765Z [INFO]  core: successfully mounted: type=cubbyhole version="v2.2.1+builtin.vault" path=cubbyhole/ namespace="ID: root. Path: "
+2026-11-07T21:49:03.824Z [INFO]  core: successfully mounted: type=token version="v2.2.1+builtin.vault" path=token/ namespace="ID: root. Path: "
+2026-11-07T21:49:03.824Z [INFO]  rollback: Starting the rollback manager with 256 workers
+2026-11-07T21:49:03.824Z [INFO]  core: restoring leases
+2026-11-07T21:49:03.824Z [INFO]  rollback: starting rollback manager
+2026-11-07T21:49:03.824Z [INFO]  expiration: lease restore complete
+2026-11-07T21:49:03.825Z [INFO]  identity: entities restored
+2026-11-07T21:49:03.825Z [INFO]  identity: groups restored
+2026-11-07T21:49:03.829Z [INFO]  core: post-unseal setup complete
+2026-11-07T21:49:03.829Z [INFO]  core: vault is unsealed
+2026-11-07T21:49:03.834Z [INFO]  expiration: revoked lease: lease_id=auth/token/root/h2d3228fdd1766257ab3b6724dc41e7a907c083a24cb8efa2f798dac86a50f23b
+2026-11-07T21:49:03.869Z [INFO]  core: successful mount: namespace="" path=secret/ type=kv version="v0.27.0+builtin"
+WARNING! dev mode is enabled! In this mode, Vault runs entirely in-memory
+and starts unsealed with a single unseal key. The root token is already
+authenticated to the CLI, so you can immediately begin using Vault.
+
+You may need to set the following environment variables:
+
+    $ export VAULT_ADDR='http://127.0.0.1:18081'
+
+The unseal key and root token are displayed below in case you want to
+seal/unseal the Vault or re-authenticate.
+
+Unseal Key: RWxruvWj4gC6ZcvIcoqgUGZtdrGWw+rwSgyqFF6de1E=
+Root Token: lab-root-token
+
+Development mode should NOT be used in production installations!
+
+2026-11-07T21:49:23.929Z [INFO]  core: successful mount: namespace="" path=transit/ type=transit version="v2.2.1+builtin.vault"
+2026-11-07T21:49:26.933Z [INFO]  secrets.pki.pki_521addeb: 0114433f-d77d-ddb7-fb60-451bccc3d872: succeeded in migrating to issuer storage version 2
+2026-11-07T21:49:26.933Z [INFO]  core: successful mount: namespace="" path=pki/ type=pki version="v2.2.1+builtin.vault"
+2026-11-07T21:49:27.422Z [INFO]  core: tuning successful: path=pki/ tuned=["leases"]
+2026-11-07T21:49:30.637Z [INFO]  core: enabled audit backend: path=file/ type=file
+2026-11-07T21:49:34.434Z [INFO]  expiration: revoked lease: lease_id=auth/token/create/hecbaaf8fd047b0c28e0a5d0c5e759c8c8142a2ac84ced5b1094bc425474767e4
+2026-11-07T21:49:36.644Z [INFO]  expiration: revoked lease: lease_id=auth/token/create/hc65755925e9b3eb251590d0de77d3d28ace6eac6cef4daf977270b013850d33b
+2026-11-07T21:49:38.039Z [INFO]  core: marked as sealed
+2026-11-07T21:49:38.039Z [INFO]  core: pre-seal teardown starting
+2026-11-07T21:49:38.039Z [INFO]  rollback: stopping rollback manager
+2026-11-07T21:49:38.042Z [ERROR] core: error storing certificate counts: error="error reading from storage: context canceled"
+2026-11-07T21:49:38.042Z [ERROR] core: error storing duration adjusted certificate counts: error="context canceled"
+2026-11-07T21:49:38.042Z [INFO]  core: pre-seal teardown complete
+2026-11-07T21:49:38.042Z [INFO]  core: stopping cluster listeners
+2026-11-07T21:49:38.042Z [INFO]  core.cluster-listener: forwarding rpc listeners stopped
+2026-11-07T21:49:38.438Z [INFO]  core.cluster-listener: rpc listeners successfully shut down
+2026-11-07T21:49:38.439Z [INFO]  core: cluster listeners successfully shut down
+2026-11-07T21:49:38.443Z [INFO]  core: vault is sealed
+2026-11-07T21:49:39.855Z [INFO]  core.cluster-listener.tcp: starting listener: listener_address=127.0.0.1:18082
+2026-11-07T21:49:39.855Z [INFO]  core.cluster-listener: serving cluster requests: cluster_listen_address=127.0.0.1:18082
+2026-11-07T21:49:39.855Z [INFO]  core: post-unseal setup starting
+2026-11-07T21:49:39.855Z [INFO]  core: loaded wrapping token key
+2026-11-07T21:49:39.855Z [INFO]  core: successfully setup plugin runtime catalog
+2026-11-07T21:49:39.855Z [INFO]  core: successfully setup plugin catalog: plugin-directory=""
+2026-11-07T21:49:39.859Z [INFO]  core: successfully mounted: type=system version="v2.2.1+builtin.vault" path=sys/ namespace="ID: root. Path: "
+2026-11-07T21:49:39.919Z [INFO]  core: successfully mounted: type=identity version="v2.2.1+builtin.vault" path=identity/ namespace="ID: root. Path: "
+2026-11-07T21:49:39.919Z [INFO]  core: successfully mounted: type=agent_registry version="v2.2.1+builtin.vault" path=agent-registry/ namespace="ID: root. Path: "
+2026-11-07T21:49:39.919Z [INFO]  core: successfully mounted: type=kv version="v0.27.0+builtin" path=secret/ namespace="ID: root. Path: "
+2026-11-07T21:49:39.919Z [INFO]  core: successfully mounted: type=transit version="v2.2.1+builtin.vault" path=transit/ namespace="ID: root. Path: "
+2026-11-07T21:49:39.920Z [INFO]  core: successfully mounted: type=pki version="v2.2.1+builtin.vault" path=pki/ namespace="ID: root. Path: "
+2026-11-07T21:49:39.920Z [INFO]  core: successfully mounted: type=cubbyhole version="v2.2.1+builtin.vault" path=cubbyhole/ namespace="ID: root. Path: "
+2026-11-07T21:49:39.938Z [INFO]  core: successfully mounted: type=token version="v2.2.1+builtin.vault" path=token/ namespace="ID: root. Path: "
+2026-11-07T21:49:39.938Z [INFO]  rollback: Starting the rollback manager with 256 workers
+2026-11-07T21:49:39.938Z [INFO]  core: restoring leases
+2026-11-07T21:49:39.939Z [INFO]  rollback: starting rollback manager
+2026-11-07T21:49:39.939Z [INFO]  expiration: lease restore complete
+2026-11-07T21:49:39.939Z [INFO]  identity: entities restored
+2026-11-07T21:49:39.939Z [INFO]  identity: groups restored
+2026-11-07T21:49:39.946Z [INFO]  core: post-unseal setup complete
+2026-11-07T21:49:39.946Z [INFO]  core: vault is unsealed
